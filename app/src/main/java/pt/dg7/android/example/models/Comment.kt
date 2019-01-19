@@ -1,7 +1,9 @@
 package pt.dg7.android.example.models
 
-data class Comment(val id: Int?,
-                   val postId: Int,
-                   val name: String,
-                   val email: String,
-                   val body: String)
+import com.google.gson.annotations.SerializedName
+
+data class Comment(@SerializedName("id") val id: Int?,
+                   @SerializedName("postId") val postId: Int,
+                   @SerializedName("name") val name: String,
+                   @SerializedName("email") val email: String,
+                   @SerializedName("body") val body: String)

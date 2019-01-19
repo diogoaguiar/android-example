@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-class BaseViewModel: ViewModel() {
+open class BaseViewModel: ViewModel() {
     /**
      * Holds the RxJava disposables from the ViewModel
      * @ref https://proandroiddev.com/managing-disposables-in-rxjava-2-the-less-bad-version-b3ff2b0b72a2

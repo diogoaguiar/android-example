@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Android Example</string>
+    <string name="avatar_image">Avatar image</string>
 </resources>
