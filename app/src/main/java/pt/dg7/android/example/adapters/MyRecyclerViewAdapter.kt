@@ -10,11 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import pt.dg7.android.example.R
 import pt.dg7.android.example.models.Comment
+import pt.dg7.android.example.models.Image
 
-class CommentsAdapter(
+class MyRecyclerViewAdapter(
     private val context: Context,
-    var comments: List<Comment>? = listOf()
-) : RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>() {
+    var comments: List<Comment>? = listOf(),
+    var avatars: List<Image>? = listOf()
+) : RecyclerView.Adapter<MyRecyclerViewAdapter.CommentViewHolder>() {
 
     /**
      * Create new views (invoked by the layout manager)
@@ -35,9 +37,15 @@ class CommentsAdapter(
             holder.message.text = comments[position].body
         }
 
+        val avatars = this.avatars
+        val url = if (avatars === null || avatars.isEmpty())
+            "https://via.placeholder.com/150"
+        else
+            avatars[(0 until avatars.size).random()].urls.small
+
         Glide.with(context)
             .asBitmap()
-            .load("https://vignette.wikia.nocookie.net/undertale-rho/images/5/5f/Placeholder.jpg/revision/latest/scale-to-width-down/480")
+            .load(url)
             .into(holder.avatar)
     }
 
@@ -55,7 +63,7 @@ class CommentsAdapter(
      * you provide access to all the views for a data item in a view holder.
      * Each data item is just a string in this case that is shown in a TextView.
      */
-    class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var avatar: ImageView = view.findViewById(R.id.iv_avatar); private set
         var title: TextView = view.findViewById(R.id.tv_title); private set
         var message: TextView = view.findViewById(R.id.tv_message); private set

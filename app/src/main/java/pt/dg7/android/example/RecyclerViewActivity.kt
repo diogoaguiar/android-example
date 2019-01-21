@@ -1,14 +1,12 @@
 package pt.dg7.android.example
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_recycler_view.*
-import pt.dg7.android.example.adapters.CommentsAdapter
-import pt.dg7.android.example.models.Comment
+import pt.dg7.android.example.adapters.MyRecyclerViewAdapter
 import pt.dg7.android.example.viewmodels.RecyclerViewViewModel
 
 class RecyclerViewActivity : AppCompatActivity() {
@@ -17,7 +15,7 @@ class RecyclerViewActivity : AppCompatActivity() {
     }
 
     private lateinit var viewModel: RecyclerViewViewModel
-    private lateinit var adapter: CommentsAdapter
+    private lateinit var adapter: MyRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,12 +25,17 @@ class RecyclerViewActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(RecyclerViewViewModel::class.java)
 
         // RecyclerView
-        adapter = CommentsAdapter(this, viewModel.comments.value)
+        adapter = MyRecyclerViewAdapter(this, viewModel.comments.value)
         rv_options.adapter = adapter
         rv_options.layoutManager = LinearLayoutManager(this)
 
         viewModel.comments.observe(this, Observer {
             adapter.comments = it
+            adapter.notifyDataSetChanged()
+        })
+
+        viewModel.avatars.observe(this, Observer {
+            adapter.avatars = it
             adapter.notifyDataSetChanged()
         })
     }

@@ -4,6 +4,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import okhttp3.logging.HttpLoggingInterceptor
+
+
 
 object ApiClient {
     private var placeholderClient: Retrofit? = null
@@ -26,17 +29,28 @@ object ApiClient {
     }
 
     private fun createPlaceholderClient(): Retrofit {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .build()
+
         return Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com")
+            .client(client)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
     private fun createUnsplashClient(): Retrofit {
-        // Add custom authorization header
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+
         val client = OkHttpClient.Builder()
             .addInterceptor {
+                // Add custom authorization header
                 val request = it.request()
                     .newBuilder()
                     .header(
@@ -51,10 +65,11 @@ object ApiClient {
 
                 it.proceed(request)
             }
+            .addInterceptor(logging)
             .build()
 
         return Retrofit.Builder()
-            .baseUrl("https://jsonplaceholder.typicode.com")
+            .baseUrl("https://api.unsplash.com")
             .client(client)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())

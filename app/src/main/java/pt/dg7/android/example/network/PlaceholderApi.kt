@@ -4,6 +4,9 @@ import io.reactivex.Observable
 import pt.dg7.android.example.models.Comment
 import retrofit2.http.*
 
+/**
+ * @ref https://jsonplaceholder.typicode.com/
+ */
 interface PlaceholderApi {
     @GET("/comments")
     fun getComments(): Observable<List<Comment>>
