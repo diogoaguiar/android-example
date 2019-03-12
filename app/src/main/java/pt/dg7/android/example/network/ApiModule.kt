@@ -1,29 +1,31 @@
 package pt.dg7.android.example.network
 
+import dagger.Module
+import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
-object ApiClient {
-    private var placeholderClient: Retrofit? = null
-    private var unsplashClient: Retrofit? = null
+/**
+ * Provides the Api instances used by Dagger in the injection processes
+ */
+@Suppress("unused")
+@Module
+class ApiModule {
 
-    fun getPlaceholderClient(): Retrofit {
-        if (placeholderClient === null) {
-            placeholderClient = createPlaceholderClient()
-        }
-
-        return placeholderClient!!
+    @Singleton
+    @Provides
+    fun providesPlaceholderApi(): PlaceholderApi {
+        return createPlaceholderClient().create(PlaceholderApi::class.java)
     }
 
-    fun getUnsplashClient(): Retrofit {
-        if (unsplashClient === null) {
-            unsplashClient = createUnsplashClient()
-        }
-
-        return unsplashClient!!
+    @Singleton
+    @Provides
+    fun providesUnsplashApi(): UnsplashApi {
+        return createUnsplashClient().create(UnsplashApi::class.java)
     }
 
     private fun createPlaceholderClient(): Retrofit {
